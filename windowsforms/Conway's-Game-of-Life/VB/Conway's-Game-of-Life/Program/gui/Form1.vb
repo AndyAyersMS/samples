@@ -28,7 +28,7 @@
 
         DataGridView1.ResumeLayout()
 
-        _animation = New Animation(DataGridView1)
+        _animation = New Animation(DataGridView1, Label1)
 
     End Sub
 
@@ -36,6 +36,7 @@
         ComboBox1.SelectedIndex = 0
         DataGridView1.CurrentCell = Nothing
         DataGridView1.ShowCellToolTips = False
+
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
@@ -43,6 +44,7 @@
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Label1.Text = "timing..."
         Dim backgroundThread As New Threading.Thread(AddressOf _animation.animate)
         backgroundThread.Start(ComboBox1.SelectedIndex)
     End Sub

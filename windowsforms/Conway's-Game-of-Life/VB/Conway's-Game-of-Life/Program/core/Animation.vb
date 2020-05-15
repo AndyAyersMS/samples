@@ -1,13 +1,17 @@
 ﻿Imports System.Threading
+Imports System.Diagnostics
 
 Public Class Animation
 
     Private ReadOnly _gridControl As ExDGV
     Private ReadOnly _cellValues(99)() As Integer
+    Private ReadOnly _label1 As Label
+
     Public Cancelled As Boolean = False
 
-    Public Sub New(dgv As ExDGV)
+    Public Sub New(dgv As ExDGV, lbl As Label)
         _gridControl = dgv
+        _label1 = lbl
         For r As Integer = 0 To 99
             ReDim _cellValues(r)(99)
         Next
@@ -103,6 +107,7 @@ Public Class Animation
 
     Public Sub animate(index As Object)
         Cancelled = False
+        Dim sw As Stopwatch = Stopwatch.StartNew()
         Dim l As Integer = 0
         Dim t As Integer = 0
         Dim r As Integer = 0
@@ -132,7 +137,7 @@ Public Class Animation
                 Next x
             Next y
             'Pause for 50 milliseconds
-            Thread.Sleep(50)
+            'Thread.Sleep(50)
 
             For y As Integer = t To b
                 For x As Integer = l To r
@@ -150,7 +155,7 @@ Public Class Animation
                 Next x
             Next y
             'Pause for 50 milliseconds
-            Thread.Sleep(50)
+            'Thread.Sleep(50)
             For y As Integer = t To b
                 For x As Integer = l To r
                     If Cancelled Then
@@ -165,7 +170,7 @@ Public Class Animation
                 Next x
             Next y
             'Pause for 50 milliseconds
-            Thread.Sleep(50)
+            'Thread.Sleep(50)
             t -= 1
             l -= 1
             b += 1
@@ -176,6 +181,8 @@ Public Class Animation
             End If
             repaint()
         Loop
+        sw.Stop()
+        _label1.Invoke(Sub() _label1.Text = String.Format("{0} ms", sw.ElapsedMilliseconds))
     End Sub
 
     Private Sub grow(g As Integer, r As Integer, c As Integer)
